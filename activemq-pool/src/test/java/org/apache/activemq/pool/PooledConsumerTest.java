@@ -49,9 +49,9 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//public class PooledConsumerTest {
-//
-//  private static final Logger LOGGER = LoggerFactory.getLogger(PooledConsumerTest.class);
+public class PooledConsumerTest {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(PooledConsumerTest.class);
 /*    public static final String USERNAME = "test";
     public static final String PASSWORD = "test";
     private static final ActiveMQQueue QUEUE = new ActiveMQQueue("TEST");
