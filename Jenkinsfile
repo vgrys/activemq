@@ -11,8 +11,8 @@ node {
    }
 stage 'promotion'
 def userInput = input(
- id: 'userInput', message: 'Let\'s promote?', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: 'Master bribge changes', description: 'Environment', name: 'env'],
+ id: 'userInput', message: 'Do you want to start build process?', parameters: [
+ [$class: 'TextParameterDefinition', defaultValue: 'Master bribge changes', description: 'Environment', name: 'master bridge'],
 // [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
 ])
 echo ("Env: "+userInput['env'])
