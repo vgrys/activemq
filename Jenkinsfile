@@ -9,14 +9,12 @@ node {
       // **       in the global configuration.
       mvnHome = tool 'M3'
    }
-   stage ('promotion')
+stage 'promotion'
 def userInput = input(
- id: 'userInput', message: 'Do you want to start build process?', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: 'Master bridge changing', description: 'Environment', name: 'env'],
-// [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
+ id: 'userInput', message: 'Let\'s promote?', parameters: [
+ [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
 ])
-echo ("Env: "+userInput['env'])
-//echo ("Target: "+userInput['target']) // not using this now
+echo ("Env: "+userInput)
       // Starting build process
    stage('Build') {
       // Run the maven build
