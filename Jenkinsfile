@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 node {
    def mvnHome
    stage('Preparation') { // for display purposes
@@ -8,6 +9,15 @@ node {
       // **       in the global configuration.
       mvnHome = tool 'M3'
    }
+stage 'promotion'
+def userInput = input(
+ id: 'userInput', message: 'Let\'s promote?', parameters: [
+ [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
+ [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
+])
+echo ("Env: "+userInput['env'])
+echo ("Target: "+userInput['target'])
+// Starting build process
    stage('Build') {
       // Run the maven build
       if (isUnix()) {
