@@ -12,7 +12,7 @@ node {
    stage ('promotion')
 def userInput = input(
  id: 'userInput', message: 'Do you want to start build process?', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: 'env', description: 'Environment', name: 'master bridge'],
+ [$class: 'TextParameterDefinition', defaultValue: 'Master bridge changing', description: 'Environment', name: 'env'],
 // [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
 ])
 echo ("Env: "+userInput['env'])
