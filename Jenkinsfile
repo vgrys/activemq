@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 node {
    def mvnHome
    stage('Preparation') { // for display purposes
@@ -6,8 +7,9 @@ node {
       // Get the Maven tool.
       // ** NOTE: This 'M3' Maven tool must be configured
       // **       in the global configuration.
-      mvnHome = tool 'M3'
+      mvnHome = tool 'M2'
    }
+<<<<<<< HEAD
 stage 'promotion'
 def userInput = input(
  id: 'userInput', message: 'Let\'s promote?', parameters: [
@@ -17,6 +19,15 @@ def userInput = input(
 echo ("Env: "+userInput['env'])
 echo ("Target: "+userInput['target'])
 // Starting build process
+=======
+   stage 'promotion'
+      def userInput = input(
+      id: 'userInput', message: 'Let\'s promote?', parameters: [
+      [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+      ])
+      echo ("Env: "+userInput)
+      // Starting build process
+>>>>>>> 5761e36db00eb4498575de9f0caff3574a08ece3
    stage('Build') {
       // Run the maven build
       if (isUnix()) {
