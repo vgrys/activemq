@@ -46,7 +46,7 @@ node {
 
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out 'framework' repo **********"
-        dir('cd-cd-framework') {
+        dir('framework') {
             git branch: 'Artifactory-with-plugin', url: 'https://github.com/vgrys/VAULT.git'
         }
         echo "********* End of check out 'framework' repo **********"
