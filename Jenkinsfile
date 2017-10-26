@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-@Library('shared-library@master')
+@Library('shared-library@Artifactory-with-plugin')
 import com.epam.ArtifactoryToolsPlugin
 
 
@@ -74,8 +74,8 @@ node {
         GString atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
         GString projectArchivePath = "${WORKSPACE}/*tgz"
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'artifactoryIDVG'
-        def artifactory = new ArtifactoryConfig()
-        artifactory.configure(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
+        def artifactory = new ArtifactoryToolsPlugin()
+        artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
         artifactoryServer.upload(env.uploadSpec)
         echo "********* End of upload artifacts to Artifactory server **********"
     }
