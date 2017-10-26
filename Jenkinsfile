@@ -91,7 +91,7 @@ node {
     // PROJECT DEPLOYMENT STAGE
     stage('Project deployment') {
         echo "********* Start project deployment **********"
-        withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
+        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
             dir("${WORKSPACE}/framework/ansible") {
                 sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
@@ -104,7 +104,7 @@ node {
     // ATF DEPLOYMENT STAGE
     stage('ATF deploy') {
         echo "********* Start to deploy AFT project **********"
-        withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
+        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
             dir("${WORKSPACE}/framework/ansible") {
                 sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
             }
