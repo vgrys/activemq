@@ -109,7 +109,7 @@ node {
         echo "********* Start to deploy AFT project **********"
         withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
             dir("${WORKSPACE}/cd-cd-framework/ansible") {
-                sh "ansible-playbook --extra-vars 'user=artifactory_user password=artifactory_pwd server=P9CPWPTDMCI01 artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
+                sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
             }
         }
         echo "********* End of deploy AFT project **********"
