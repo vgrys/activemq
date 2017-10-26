@@ -42,11 +42,6 @@ node {
     stage('Check out Source') {
         echo "********** Checkout SCM and Set Bitbucket properties ***********"
         checkout scm
-        // Set bitbucket user properties
-        bitbucketInfo()
-        // Set the git variables for the project
-        bitbucketGitInfo()
-        echo "DEBUG CODE -----> Git Origin: ${env.GIT_ORIGIN}, Git User: ${env.GIT_USER}, Git Project: ${env.GIT_PROJECT}, Git Branch: ${env.GIT_BRANCH}, Git Repo: ${env.GIT_REPO}, Git Feature Name (optional): ${env.GIT_FEATURE_NAME}"
     }
 
     stage('Check out "cd-cd-framework" repo') {
