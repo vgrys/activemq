@@ -50,9 +50,11 @@ node {
     }
 
     stage('Check out "cd-cd-framework" repo') {
+        echo "********* Check out \"cd-cd-framework\" repo **********"
         dir('cd-cd-framework') {
             git url: 'https://github.com/vgrys/VAULT.git'
         }
+        echo "********* End of check out \"cd-cd-framework\" repo **********"
     }
 
     // --------------------------------------
