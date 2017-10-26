@@ -15,7 +15,7 @@ String artifactoryRepo = 'bigdata-dss-automation'
 String artifactoryUrl = 'http://192.168.56.105:8081'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
-String projectName = 'sample'
+String projectName = 'sample-project'
 
 // Node is the dss node
 node {
@@ -40,7 +40,7 @@ node {
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
     // CHECK OUT SCM STEPS
     stage('Check out Source') {
-        echo "********** Checkout SCM and Set Bitbucket properties ***********"
+        echo "********** Checkout SCM ***********"
         checkout scm
     }
 
@@ -70,7 +70,7 @@ node {
         echo "********* Start to upload artifacts to Artifactory server **********"
         GString atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
         GString projectArchivePath = "${WORKSPACE}/*tgz"
-        def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'artifactoryID'
+        def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         def artifactory = new ArtifactoryToolsPlugin()
         artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
         artifactoryServer.upload(env.uploadSpec)
