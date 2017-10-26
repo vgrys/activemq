@@ -45,11 +45,11 @@ node {
     }
 
     stage('Check out "cd-cd-framework" repo') {
-        echo "********* Check out \"cd-cd-framework\" repo **********"
+        echo "********* Check out \"framework\" repo **********"
         dir('cd-cd-framework') {
             git url: 'https://github.com/vgrys/VAULT.git'
         }
-        echo "********* End of check out \"cd-cd-framework\" repo **********"
+        echo "********* End of check out \"framework\" repo **********"
     }
 
     // --------------------------------------
@@ -92,7 +92,7 @@ node {
     stage('Project deployment') {
         echo "********* Start project deployment **********"
         withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            dir("${WORKSPACE}/cd-cd-framework/ansible") {
+            dir("${WORKSPACE}/framework/ansible") {
                 sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
         }
@@ -105,7 +105,7 @@ node {
     stage('ATF deploy') {
         echo "********* Start to deploy AFT project **********"
         withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            dir("${WORKSPACE}/cd-cd-framework/ansible") {
+            dir("${WORKSPACE}/framework/ansible") {
                 sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
             }
         }
