@@ -1,7 +1,7 @@
 #!/usr/bin/groovy
 
-@Library('dss-pipeline-library')
-import ctc.ad.corp.cicd.ArtifactoryConfig
+@Library('shared-library@master')
+import com.epam.ArtifactoryToolsPlugin
 
 
 // Add DSS shared libraries
@@ -12,13 +12,13 @@ import ctc.ad.corp.cicd.ArtifactoryConfig
 // ---------------------------------------------------------------
 
 String artifactoryRepo = 'bigdata-dss-automation'
-String artifactoryUrl = 'https://artifactory.corp.ad.ctc'
+String artifactoryUrl = 'http://192.168.56.105:8081'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
 String projectName = 'sample'
 
 // Node is the dss node
-node('q9lcwptdmci01.labcorp.ad.ctc') {
+node {
 
     // Initialization - do not change
     currentBuild.result = "SUCCESS"
@@ -47,6 +47,12 @@ node('q9lcwptdmci01.labcorp.ad.ctc') {
         // Set the git variables for the project
         bitbucketGitInfo()
         echo "DEBUG CODE -----> Git Origin: ${env.GIT_ORIGIN}, Git User: ${env.GIT_USER}, Git Project: ${env.GIT_PROJECT}, Git Branch: ${env.GIT_BRANCH}, Git Repo: ${env.GIT_REPO}, Git Feature Name (optional): ${env.GIT_FEATURE_NAME}"
+    }
+
+    stage('Check out "cd-cd-framework" repo') {
+        dir('cd-cd-framework') {
+            git url: 'https://github.com/vgrys/VAULT.git'
+        }
     }
 
     // --------------------------------------
@@ -89,7 +95,7 @@ node('q9lcwptdmci01.labcorp.ad.ctc') {
     stage('Project deployment') {
         echo "********* Start project deployment **********"
         withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            dir("${WORKSPACE}/ansible") {
+            dir("${WORKSPACE}/cd-cd-framework/ansible") {
                 sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
         }
@@ -102,7 +108,7 @@ node('q9lcwptdmci01.labcorp.ad.ctc') {
     stage('ATF deploy') {
         echo "********* Start to deploy AFT project **********"
         withCredentials([usernamePassword(credentialsId: 'artifactoryIDVG', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            dir("${WORKSPACE}/ansible") {
+            dir("${WORKSPACE}/cd-cd-framework/ansible") {
                 sh "ansible-playbook --extra-vars 'user=artifactory_user password=artifactory_pwd server=P9CPWPTDMCI01 artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
             }
         }
