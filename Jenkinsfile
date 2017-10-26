@@ -83,11 +83,11 @@ node {
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
     // TEST DATA MANAGMENT STEPS
-    stage('Test Data Management') {
-        echo "********* Test Data Management started ************"
-        TDMTools()
-        echo "********* Test Data Management completed ************"
-    }
+//    stage('Test Data Management') {
+//        echo "********* Test Data Management started ************"
+//        TDMTools()
+//        echo "********* Test Data Management completed ************"
+//    }
 
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
@@ -117,7 +117,7 @@ node {
 
     stage('smoke tests') {
         String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l; pwd'
-        sh "ssh -o StrictHostKeyChecking=no cicdbigd@Q9LCWPTDMCI01 /bin/bash -c '\"${commandToRun}\"'"
+        sh "ssh -o StrictHostKeyChecking=no vagrantd@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
 
 
