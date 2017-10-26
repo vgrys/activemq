@@ -114,7 +114,7 @@ node {
 
     stage('smoke tests') {
         String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l; pwd'
-        sh "ssh -o StrictHostKeyChecking=no vagrantd@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
+        sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
 
 
