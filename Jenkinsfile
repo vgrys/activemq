@@ -47,7 +47,7 @@ node {
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out \"framework\" repo **********"
         dir('cd-cd-framework') {
-            git url: 'https://github.com/vgrys/VAULT.git'
+            git branch: 'master', url: 'https://github.com/vgrys/VAULT.git'
         }
         echo "********* End of check out \"framework\" repo **********"
     }
@@ -70,7 +70,7 @@ node {
         echo "********* Start to upload artifacts to Artifactory server **********"
         GString atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
         GString projectArchivePath = "${WORKSPACE}/*tgz"
-        def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'artifactoryIDVG'
+        def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'artifactoryID'
         def artifactory = new ArtifactoryToolsPlugin()
         artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
         artifactoryServer.upload(env.uploadSpec)
