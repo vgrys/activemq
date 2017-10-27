@@ -95,7 +95,8 @@ node {
             withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
                 sh "ls -la ${zephCred}"
                 dir("${WORKSPACE}/framework/ansible") {
-                sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE} zephCred=${zephCred}' projectDeployment.yml"
+                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE} zephCred=${zephCred}' projectDeployment.yml"
+                }
             }
         }
         echo "********* End of project deployment **********"
@@ -107,9 +108,9 @@ node {
     stage('ATF deploy') {
         echo "********* Start to deploy AFT project **********"
         withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-                dir("${WORKSPACE}/framework/ansible") {
-                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
-                }
+            dir("${WORKSPACE}/framework/ansible") {
+                sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
+            }
         }
         echo "********* End of deploy AFT project **********"
     }
@@ -118,7 +119,6 @@ node {
         String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l; pwd'
         sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
-
 
 //    } catch (err) {
 //        currentBuild.result = "FAILURE"
