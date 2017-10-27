@@ -83,17 +83,17 @@ node {
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
     // ATF DEPLOYMENT STAGE
-//    stage('ATF deploy') {
-//        echo "********* Start to deploy AFT project **********"
-//        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-//            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
-//                dir("${WORKSPACE}/framework/ansible") {
-//                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE} zephCred=${zephCred}' ATFDeployment.yml"
-//                }
-//            }
-//        }
-//        echo "********* End of deploy AFT project **********"
-//    }
+    stage('ATF deploy') {
+        echo "********* Start to deploy AFT project **********"
+        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
+            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
+                dir("${WORKSPACE}/framework/ansible") {
+                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE} zephCred=${zephCred}' ATFDeployment.yml"
+                }
+            }
+        }
+        echo "********* End of deploy AFT project **********"
+    }
 
     stage('smoke tests') {
         String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l $HOME/zephCred; cat $HOME/zephCred; pwd; echo $ATF_CONF_FILE; echo END'
