@@ -96,7 +96,12 @@ node {
 //    }
 
     stage('smoke tests') {
-        String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l $HOME/zephCred; cat $HOME/zephCred; pwd; echo $ATF_CONF_FILE; echo END'
+        String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l $HOME/zephCred; cat $HOME/zephCred; pwd; echo $ATF_CONF_FILE; cat $HOME/.bashrc $echo END'
+        sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
+    }
+
+    stage('Variable test') {
+        String commandToRun = 'source $HOME/.bashrc; echo $ATF_CONF_FILE; cat $HOME/.bashrc $echo END'
         sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
 }
