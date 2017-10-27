@@ -3,21 +3,12 @@
 @Library('shared-library@Artifactory-with-plugin')
 import com.epam.ArtifactoryToolsPlugin
 
-
-// Add DSS shared libraries
-// ---------------------------------------------------------------
-// DEVELOPER NOTE: EDIT JOB SCHEDULE AS REQUIRED
-// Example here runs Jenkins job every 6 hours (uncomment to use):
-// properties([pipelineTriggers([cron('0 H/6 * * *')])])
-// ---------------------------------------------------------------
-
 String artifactoryRepo = 'bigdata-dss-automation'
 String artifactoryUrl = 'http://192.168.56.105:8081'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
 String projectName = 'sample-project'
 
-// Node is the dss node
 node {
 
     // Initialization - do not change
@@ -25,8 +16,6 @@ node {
     def ERROR_TYPE = ""
 
     echo "DEBUG CODE -----> Running ${env.JOB_NAME} on ${env.JENKINS_URL} for branch ${env.BRANCH_NAME}"
-
-//    try {
 
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
@@ -77,14 +66,6 @@ node {
         echo "********* End of upload artifacts to Artifactory server **********"
     }
 
-    // --------------------------------------
-    // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
-    // TEST DATA MANAGMENT STEPS
-//    stage('Test Data Management') {
-//        echo "********* Test Data Management started ************"
-//        TDMTools()
-//        echo "********* Test Data Management completed ************"
-//    }
 
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
@@ -102,28 +83,20 @@ node {
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
     // ATF DEPLOYMENT STAGE
-    stage('ATF deploy') {
-        echo "********* Start to deploy AFT project **********"
-        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
-                sh "ls -la ${zephCred}"
-                dir("${WORKSPACE}/framework/ansible") {
-                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE} zephCred=${zephCred}' ATFDeployment.yml"
-                }
-            }
-        }
-        echo "********* End of deploy AFT project **********"
-    }
+//    stage('ATF deploy') {
+//        echo "********* Start to deploy AFT project **********"
+//        withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
+//            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
+//                dir("${WORKSPACE}/framework/ansible") {
+//                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE} zephCred=${zephCred}' ATFDeployment.yml"
+//                }
+//            }
+//        }
+//        echo "********* End of deploy AFT project **********"
+//    }
 
     stage('smoke tests') {
         String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l $HOME/zephCred; cat $HOME/zephCred; pwd; echo $ATF_CONF_FILE; echo END'
         sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
-
-//    } catch (err) {
-//        currentBuild.result = "FAILURE"
-//        // Send error email
-//        sendErrorEmail()
-//        throw err
-//    }
 }
