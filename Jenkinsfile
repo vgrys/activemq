@@ -92,11 +92,8 @@ node {
     stage('Project deployment') {
         echo "********* Start project deployment **********"
         withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
-                sh "ls -la ${zephCred}"
                 dir("${WORKSPACE}/framework/ansible") {
-                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE} zephCred=${zephCred}' projectDeployment.yml"
-                }
+                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
         }
         echo "********* End of project deployment **********"
@@ -108,15 +105,18 @@ node {
     stage('ATF deploy') {
         echo "********* Start to deploy AFT project **********"
         withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-            dir("${WORKSPACE}/framework/ansible") {
-                sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE}' ATFDeployment.yml"
+            withCredentials([file(credentialsId: 'zeph', variable: 'zephCred')]) {
+                sh "ls -la ${zephCred}"
+                dir("${WORKSPACE}/framework/ansible") {
+                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryRepo=${artifactoryRepo} artifactoryUrl=${artifactoryUrl} atfVersion=${atfVersion} workspace=${WORKSPACE} zephCred=${zephCred}' ATFDeployment.yml"
+                }
             }
         }
         echo "********* End of deploy AFT project **********"
     }
 
     stage('smoke tests') {
-        String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l; pwd'
+        String commandToRun = 'source /tmp/ATFVENV/bin/activate; echo $USER; ls -l $HOME/zephCred; cat $HOME/zephCred; pwd'
         sh "ssh -o StrictHostKeyChecking=no vagrant@192.168.56.21 /bin/bash -c '\"${commandToRun}\"'"
     }
 
