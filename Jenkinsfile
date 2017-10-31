@@ -36,6 +36,7 @@ node {
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
         GString atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
+        GString projectArchivePath = "${WORKSPACE}/*tgz"
         String frameworkArchivePath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
