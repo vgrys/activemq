@@ -40,7 +40,7 @@ node {
         String frameworkName = "framework"
         def downloadSpec = """{
                         "files": [{
-                            "pattern": "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
+                            "pattern": "/artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
                             "target": "${FrameworkPath}"
                                 }]
                        }"""
