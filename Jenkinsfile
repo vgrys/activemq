@@ -50,7 +50,6 @@ node {
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
-
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out 'framework' repo **********"
         dir('framework') {
