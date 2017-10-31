@@ -35,14 +35,14 @@ node {
 
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        String frameworkArchivePath = "${WORKSPACE}/ansible/"
+        String FrameworkPath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
         String artifactoryFrameworkPath = "artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
         def downloadSpec = """{
                         "files": [{
-                            "pattern": "${frameworkArchivePath}",
-                            "target": "${artifactoryFrameworkPath}"
+                            "pattern": "${artifactoryFrameworkPath}",
+                            "target": "${FrameworkPath}"
                                 }]
                        }"""
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
