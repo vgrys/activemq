@@ -38,12 +38,12 @@ node {
         String frameworkArchivePath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
-        String artifactoryFrameworkPath = "artifactory/${repository}/${frameworkName}/${frameworkVersion}/"
+        String artifactoryFrameworkPath = "artifactory/${repository}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
-        artifactoryServer.upload(downloadSpec)
+        artifactoryServer.download(downloadSpec)
         downloadSpec = """{
                         "files": [{
-                            "target": "${artifactoryFrameworkPath}/${frameworkName}-${frameworkVersion}.tgz",
+                            "target": "${artifactoryFrameworkPath}",
                             "pattern": "${frameworkArchivePath}"
                                 }]
                        }"""
