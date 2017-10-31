@@ -38,10 +38,9 @@ node {
         String FrameworkPath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
-        String artifactoryFrameworkPath = "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
         def downloadSpec = """{
                         "files": [{
-                            "pattern": "${artifactoryFrameworkPath}",
+                            "pattern": "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
                             "target": "${FrameworkPath}"
                                 }]
                        }"""
