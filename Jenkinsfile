@@ -42,7 +42,7 @@ node {
         def downloadSpec = """{
                         "files": [{
                             "pattern": "${frameworkArchivePath}",
-                            "target": "${artifactoryFrameworkPath}",
+                            "target": "${artifactoryFrameworkPath}"
                                 }]
                        }"""
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
