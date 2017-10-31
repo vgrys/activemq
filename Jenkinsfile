@@ -33,6 +33,17 @@ node {
         checkout scm
     }
 
+    stage('Download artifacts "Ansible playbooks" from Artifactory server') {
+        echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
+        def atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
+        def projectArchivePath = "${WORKSPACE}/*.tgz"
+        def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
+        def artifactory = new ArtifactoryToolsPlugin()
+        artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion, framework_name, framework_version)
+        artifactoryServer.upload(env.uploadSpec)
+        echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
+    }
+
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out 'framework' repo **********"
         dir('framework') {
