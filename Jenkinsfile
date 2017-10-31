@@ -35,17 +35,21 @@ node {
 
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        GString atfArchivePath = "${WORKSPACE}/dist/*.tar.gz"
-        GString projectArchivePath = "${WORKSPACE}/*tgz"
         String frameworkArchivePath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
+        String artifactoryFrameworkPath = "artifactory/${repository}/${frameworkName}/${frameworkVersion}/"
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
-        def artifactory = new ArtifactoryToolsPlugin()
-        artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion, frameworkName, frameworkVersion, frameworkArchivePath)
-        artifactoryServer.upload(env.downloadSpec)
+        artifactoryServer.upload(downloadSpec)
+        downloadSpec = """{
+                        "files": [{
+                            "target": "${artifactoryFrameworkPath}/${frameworkName}-${frameworkVersion}.tgz",
+                            "pattern": "${frameworkArchivePath}"
+                                }]
+                       }"""
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
+
 
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out 'framework' repo **********"
@@ -75,7 +79,7 @@ node {
         GString projectArchivePath = "${WORKSPACE}/*tgz"
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         def artifactory = new ArtifactoryToolsPlugin()
-        artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion, frameworkName, frameworkVersion, frameworkArchivePath)
+        artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
         artifactoryServer.upload(env.uploadSpec)
         echo "********* End of upload artifacts to Artifactory server **********"
     }
