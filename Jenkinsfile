@@ -38,7 +38,7 @@ node {
         String frameworkArchivePath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
-        String artifactoryFrameworkPath = "artifactory/${repository}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
+        String artifactoryFrameworkPath = "artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         artifactoryServer.download(downloadSpec)
         downloadSpec = """{
