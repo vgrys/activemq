@@ -41,7 +41,7 @@ node {
         def downloadSpec = """{
               "files": [
                 {
-                  "pattern": "/artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
+                  "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
                   "target": "${frameworkPath}"
                 }
                ]
