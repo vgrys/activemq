@@ -41,8 +41,8 @@ node {
         String artifactoryFrameworkPath = "artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz"
         def downloadSpec = """{
                         "files": [{
-                            "target": "${artifactoryFrameworkPath}",
-                            "pattern": "${frameworkArchivePath}"
+                            "target": "${frameworkArchivePath}",
+                            "pattern": "${artifactoryFrameworkPath}"
                                 }]
                        }"""
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
