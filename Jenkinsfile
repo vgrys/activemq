@@ -33,6 +33,7 @@ node {
         checkout scm
     }
 
+
     stage('Download artifacts "Ansible playbooks" from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
         String frameworkArchivePath = "${WORKSPACE}/ansible/"
