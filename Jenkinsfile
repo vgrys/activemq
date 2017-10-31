@@ -49,6 +49,8 @@ node {
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
+    // http://192.168.56.105:8081/artifactory/bigdata-dss-automation/framework/0.1/framework-0.1.tgz
+
     stage('Check out "cd-cd-framework" repo') {
         echo "********* Check out 'framework' repo **********"
         dir('framework') {
