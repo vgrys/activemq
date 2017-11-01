@@ -40,11 +40,11 @@ node {
         String frameworkName = "framework"
         def downloadSpec = """{
               "files": [{
-                  "pattern": "/artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
+                  "pattern": "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz",
                   "target": "${frameworkPath}"
                         }]
                     }"""
-        def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
+        def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
         server.download(downloadSpec)
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
