@@ -84,7 +84,7 @@ node {
                     }"""
         def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
         server.download(downloadSpec)
-//        sh "cd ${frameworkPath}/${frameworkName}/${frameworkVersion} && tar -xzf ${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath} "
+        sh "tar -xzf ${frameworkPath}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath} "
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
