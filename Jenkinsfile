@@ -80,7 +80,8 @@ node {
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         def artifactory = new ArtifactoryToolsPlugin()
         artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
-        artifactoryServer.upload(env.uploadSpec)
+        def arts = artifactoryServer.upload(env.uploadSpec)
+        echo "arts is ${arts}"
         echo "********* End of upload artifacts to Artifactory server **********"
     }
 
