@@ -70,8 +70,8 @@ node {
     }
 
     // --------------------------------------
-    // This stage is added to download Ansible from Artifactory
-    stage('Download artifacts from Artifactory server') {
+    // This stage is added to download Ansible from Artifactory and extract it
+    stage('Download artifacts from Artifactory server and extract it') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
         String frameworkPath = "${WORKSPACE}/ansible/"
         String frameworkVersion = "0.1"
@@ -84,17 +84,10 @@ node {
                     }"""
         def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
         server.download(downloadSpec)
-        sh "tar -xzf ${frameworkPath}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath} "
+        echo "start to extract '${frameworkName}-${frameworkVersion}.tgz'"
+        sh "tar -xzf ${frameworkPath}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath}"
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
-
-    // --------------------------------------
-    // This stage is added to unarchive Ansible archive
-//    stage('Unarchive Ansible archive') {
-//        echo "********* Start to unarchive Ansible archive **********"
-//        echo "********* Ansible archive unarchived **********"
-//    }
-////    tar -xvzf /path/to/yourfile.tgz -C /path/where/to/extract/
 
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
