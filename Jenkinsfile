@@ -35,7 +35,7 @@ node {
 
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        dir('ansible') {
+        dir("${WORKSPACE}/ansible/") {
 //            String frameworkPath = "${WORKSPACE}/ansible/"
             String frameworkVersion = "0.1"
             String frameworkName = "framework"
@@ -93,7 +93,7 @@ node {
     stage('Project deployment') {
         echo "********* Start project deployment **********"
         withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-                dir("${WORKSPACE}/framework/ansible") {
+                dir("${WORKSPACE}/ansible") {
                     sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
         }
