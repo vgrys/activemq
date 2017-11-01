@@ -41,8 +41,8 @@ node {
             String frameworkName = "framework"
             def downloadSpec = """{
               "files": [{
-                  "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
-                  "target": ""
+                  "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz",
+                  "target": "ansible/"
                         }]
                     }"""
             def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
