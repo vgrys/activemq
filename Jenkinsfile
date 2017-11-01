@@ -8,9 +8,7 @@ String artifactoryUrl = 'http://192.168.56.105:8081'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
 String projectName = 'sample-project'
-String frameworkPath = "${WORKSPACE}/ansible/"
-String frameworkVersion = "0.1"
-String frameworkName = "framework"
+
 
 node {
 
@@ -75,6 +73,9 @@ node {
     // This stage is added to download Ansible from Artifactory
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
+        String frameworkPath = "${WORKSPACE}/ansible/"
+        String frameworkVersion = "0.1"
+        String frameworkName = "framework"
         def downloadSpec = """{
               "files": [{
                   "pattern": "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
@@ -83,18 +84,17 @@ node {
                     }"""
         def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
         server.download(downloadSpec)
+        sh "cd ${frameworkPath}/${frameworkName}/${frameworkVersion} && tar -xzf ${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath} "
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
     // --------------------------------------
     // This stage is added to unarchive Ansible archive
-    stage('Unarchive Ansible archive') {
-        echo "********* Start to unarchive Ansible archive **********"
-        sh "cd ${frameworkPath}/${frameworkName}/${frameworkVersion} && tar -xzf ${frameworkName}-${frameworkVersion}.tgz -C ${frameworkPath} "
-        echo "created an archive $bundlePath"
-        echo "********* Ansible archive unarchived **********"
-    }
-//    tar -xvzf /path/to/yourfile.tgz -C /path/where/to/extract/
+//    stage('Unarchive Ansible archive') {
+//        echo "********* Start to unarchive Ansible archive **********"
+//        echo "********* Ansible archive unarchived **********"
+//    }
+////    tar -xvzf /path/to/yourfile.tgz -C /path/where/to/extract/
 
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
