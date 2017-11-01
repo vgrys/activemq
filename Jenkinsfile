@@ -45,7 +45,7 @@ node {
                   "target": ""
                         }]
                     }"""
-            def server = Artifactory.newServer url: "${artifactoryUrl}artifactory/", credentialsId: 'arifactoryID'
+            def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
             server.download(downloadSpec)
         }
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
