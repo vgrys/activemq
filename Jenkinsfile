@@ -33,22 +33,6 @@ node {
         checkout scm
     }
 
-    stage('Download artifacts from Artifactory server') {
-        echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        String frameworkPath = "${WORKSPACE}/ansible/"
-        String frameworkVersion = "0.1"
-        String frameworkName = "framework"
-        def downloadSpec = """{
-              "files": [{
-                  "pattern": "${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
-                  "target": "${frameworkPath}"
-                        }]
-                    }"""
-        def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
-        server.download(downloadSpec)
-        echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
-    }
-
     // http://192.168.56.105:8081/artifactory/bigdata-dss-automation/framework/0.1/framework-0.1.tgz
 
 //    stage('Check out "cd-cd-framework" repo') {
@@ -80,9 +64,24 @@ node {
         def artifactoryServer = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         def artifactory = new ArtifactoryToolsPlugin()
         artifactory.artifactoryConfig(env, artifactoryRepo, "${atfArchivePath}", "${projectArchivePath}", atfVersion, projectName, projectVersion)
-        def arts = artifactoryServer.upload(env.uploadSpec)
-        echo "arts is ${arts}"
+        artifactoryServer.upload(env.uploadSpec)
         echo "********* End of upload artifacts to Artifactory server **********"
+    }
+
+    stage('Download artifacts from Artifactory server') {
+        echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
+        String frameworkPath = "${WORKSPACE}/ansible/"
+        String frameworkVersion = "0.1"
+        String frameworkName = "framework"
+        def downloadSpec = """{
+              "files": [{
+                  "pattern": "/*.tgz",
+                  "target": "${frameworkPath}"
+                        }]
+                    }"""
+        def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/${artifactoryRepo}/${frameworkName}/${frameworkVersion}", credentialsId: 'arifactoryID'
+        server.download(downloadSpec)
+        echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
     // --------------------------------------
