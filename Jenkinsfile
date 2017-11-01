@@ -4,7 +4,7 @@
 import com.epam.ArtifactoryToolsPlugin
 
 String artifactoryRepo = 'bigdata-dss-automation'
-String artifactoryUrl = 'http://192.168.56.105:8081/artifactory/'
+String artifactoryUrl = 'http://192.168.56.105:8081'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
 String projectName = 'sample-project'
@@ -35,29 +35,31 @@ node {
 
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        String frameworkPath = "${WORKSPACE}/ansible/"
-        String frameworkVersion = "0.1"
-        String frameworkName = "framework"
-        def downloadSpec = """{
+        dir('ansible') {
+//            String frameworkPath = "${WORKSPACE}/ansible/"
+            String frameworkVersion = "0.1"
+            String frameworkName = "framework"
+            def downloadSpec = """{
               "files": [{
                   "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
-                  "target": "${frameworkPath}"
+                  "target": ""
                         }]
                     }"""
-        def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
-        server.download(downloadSpec)
+            def server = Artifactory.newServer url: "${artifactoryUrl}artifactory/", credentialsId: 'arifactoryID'
+            server.download(downloadSpec)
+        }
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
     // http://192.168.56.105:8081/artifactory/bigdata-dss-automation/framework/0.1/framework-0.1.tgz
 
-    stage('Check out "cd-cd-framework" repo') {
-        echo "********* Check out 'framework' repo **********"
-        dir('framework') {
-            git branch: 'Artifactory-with-plugin', url: 'https://github.com/vgrys/VAULT.git'
-        }
-        echo "********* End of check out 'framework' repo **********"
-    }
+//    stage('Check out "cd-cd-framework" repo') {
+//        echo "********* Check out 'framework' repo **********"
+//        dir('framework') {
+//            git branch: 'Artifactory-with-plugin', url: 'https://github.com/vgrys/VAULT.git'
+//        }
+//        echo "********* End of check out 'framework' repo **********"
+//    }
 
     // --------------------------------------
     // This stage is added to perform project build
