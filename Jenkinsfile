@@ -4,7 +4,7 @@
 import com.epam.ArtifactoryToolsPlugin
 
 String artifactoryRepo = 'bigdata-dss-automation'
-String artifactoryUrl = 'http://192.168.56.105:8081'
+String artifactoryUrl = 'http://192.168.56.105:8081/artifactory/'
 String atfVersion = '0.0.1'
 String projectVersion = '0.1'
 String projectName = 'sample-project'
@@ -39,13 +39,11 @@ node {
         String frameworkVersion = "0.1"
         String frameworkName = "framework"
         def downloadSpec = """{
-              "files": [
-                {
+              "files": [{
                   "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/*.tgz",
                   "target": "${frameworkPath}"
-                }
-               ]
-            }"""
+                        }]
+                    }"""
         def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'arifactoryID'
         server.download(downloadSpec)
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
