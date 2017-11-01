@@ -35,19 +35,17 @@ node {
 
     stage('Download artifacts from Artifactory server') {
         echo "********* Start to download artifacts 'Ansible playbooks' from Artifactory server **********"
-        dir("${WORKSPACE}/ansible/") {
 //            String frameworkPath = "${WORKSPACE}/ansible/"
-            String frameworkVersion = "0.1"
-            String frameworkName = "framework"
-            def downloadSpec = """{
+        String frameworkVersion = "0.1"
+        String frameworkName = "framework"
+        def downloadSpec = """{
               "files": [{
                   "pattern": "/${artifactoryRepo}/${frameworkName}/${frameworkVersion}/${frameworkName}-${frameworkVersion}.tgz",
-                  "target": "ansible/"
+                  "target": "${WORKSPACE}/ansible/"
                         }]
                     }"""
-            def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
-            server.download(downloadSpec)
-        }
+        def server = Artifactory.newServer url: "${artifactoryUrl}/artifactory/", credentialsId: 'arifactoryID'
+        server.download(downloadSpec)
         echo "********* End of download artifacts 'Ansible playbooks' from Artifactory server **********"
     }
 
@@ -86,15 +84,14 @@ node {
         echo "********* End of upload artifacts to Artifactory server **********"
     }
 
-
     // --------------------------------------
     // DEVELOPER NOTE: DO NOT EDIT THIS STAGE
     // PROJECT DEPLOYMENT STAGE
     stage('Project deployment') {
         echo "********* Start project deployment **********"
         withCredentials([usernamePassword(credentialsId: 'arifactoryID', usernameVariable: 'artifactory_user', passwordVariable: 'artifactory_pwd')]) {
-                dir("${WORKSPACE}/ansible") {
-                    sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
+            dir("${WORKSPACE}/ansible") {
+                sh "ansible-playbook --extra-vars 'server=prod user=artifactory_user password=artifactory_pwd artifactoryUrl=${artifactoryUrl} artifactoryRepo=${artifactoryRepo} projectVersion=${projectVersion} projectName=${projectName} workspace=${WORKSPACE}' projectDeployment.yml"
             }
         }
         echo "********* End of project deployment **********"
